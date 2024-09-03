@@ -1,4 +1,0 @@
-Je suis un geek
-Les essais de Mpia
-Apprendre le C
-Coder vos Apis avec Flask
