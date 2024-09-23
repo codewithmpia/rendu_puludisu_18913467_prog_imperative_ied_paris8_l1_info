@@ -8,33 +8,39 @@
  * *******************************************************
  * Compilation   : gcc -Wall main.c -o main
  * Usage         : ./main
+
  * *******************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-#define MAX_NAMES 100
-#define MAX_NAME_LENGTH 50
 
-int main() {
-    FILE *file = fopen("cx15.3.data", "r");
-    if (!file) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier\n");
-        return 1;
-    }
+ #include <stdio.h>   // Inclusion de la bibliothèque standard d'entrée/sortie
+ #include <stdlib.h>  // Inclusion de la bibliothèque standard pour la gestion de la mémoire
+ #include <string.h>  // Inclusion de la bibliothèque pour la manipulation des chaînes de caractères
 
-    char names[MAX_NAMES][MAX_NAME_LENGTH];
-    int count = 0;
+ #define MAX_NAMES 100        // Définition de la taille maximale du tableau de noms
+ #define MAX_NAME_LENGTH 50   // Définition de la longueur maximale d'un nom
 
-    while (fscanf(file, "%s", names[count]) != EOF) {
-        count++;
-    }
+ int main() {
+     FILE *file = fopen("cx15.3.data", "r");  // Ouverture du fichier contenant les noms
+     if (!file) {  // Vérification de l'ouverture réussie du fichier
+         fprintf(stderr, "Erreur lors de l'ouverture du fichier\n");  // Message d'erreur en cas d'échec
+         return 1;  // Retourne 1 pour indiquer une erreur
+     }
 
-    fclose(file);
+     char names[MAX_NAMES][MAX_NAME_LENGTH];  // Déclaration du tableau pour stocker les noms
+     int count = 0;  // Initialisation du compteur de noms
 
-    for (int i = 0; i < count; i++) {
-        printf("%s\n", names[i]);
-    }
+     // Lecture des noms depuis le fichier jusqu'à la fin du fichier (EOF)
+     // EOF = “End Of File” (fin de fichier).
+     while (fscanf(file, "%s", names[count]) != EOF) {
+         count++;  // Incrémentation du compteur de noms
+     }
 
-    return 0;
-}
+     fclose(file);  // Fermeture du fichier
+
+     // Boucle à travers tous les noms lus
+     for (int i = 0; i < count; i++) {
+         printf("%s\n", names[i]);  // Affichage de chaque nom
+     }
+
+     return 0;  // Retourne 0 pour indiquer que le programme s'est terminé avec succès
+ }

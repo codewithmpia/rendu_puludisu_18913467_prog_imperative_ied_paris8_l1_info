@@ -7,19 +7,20 @@
  * Date          : 2024-08-26
  * Licence       : L1 PROGC
  * *******************************************************
- * Compilation   : gcc -c -fPIC list.c -o list.o
- *                 gcc -shared -o list.so list.o
- *                 gcc -o main main.c -L. -llist
+ * Compilation   : gcc -o main main.c list.c
  * Usage         : ./main
  * *******************************************************/
-#include "list.h"
 
-int main(int argc, char *argv[]) {
-    list L = NULL;
-    int k;
-    for (k = 'h'; k >= 'a'; k--) {
-        L = cons(k, L);
-    }
-    putlist(L);
-    return 0;
-}
+ // Inclusion du fichier d'en-tête "list.h" qui contient les définitions et déclarations pour les listes chaînées
+ #include "list.h"
+
+ int main() {
+     list L = NULL;  // Initialiser la liste à NULL
+     int k;
+     // inversion des elements de la listes, on aura:  h g f e d c b a
+     for (k = 'h'; k >= 'a'; k--) {
+         L = cons(k, L);  // Ajouter chaque caractère de 'h' à 'a' en tête de liste
+     }
+     putlist(L);  // Afficher les éléments de la liste
+     return 0;  // Retourner 0 pour indiquer que le programme s'est terminé avec succès
+ }

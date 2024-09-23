@@ -1,6 +1,6 @@
 /* *******************************************************
  * Nom           : main.c
- * Rôle          : Lis les mots dans un fichier et exclue les 
+ * Rôle          : Lis les mots dans un fichier et exclue les
  *                 mots figurant la stoplist
  * Auteur        : Mpia Mimpiya PULUDISU
  * Version       : 1.0
@@ -10,53 +10,64 @@
  * Compilation   : gcc -c list.c -o list.o
                    gcc -c main.c -o main.o
                    gcc main.o list.o -o main
+
+                   OU
+                   gcc -W main.c list.c -o main
+
  * Usage         : ./main
  * *******************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "list.h"
 
-#define MAX_NAMES 100
-#define MAX_NAME_LENGTH 50
 
-int main(int argc, char *argv[]) {
-    FILE *file = fopen("cx15.3.data", "r");
-    if (!file) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier\n");
-        return 1;
-    }
+ #include <stdio.h>   // Inclusion de la bibliothèque standard d'entrée/sortie
+ #include <stdlib.h>  // Inclusion de la bibliothèque standard pour la gestion de la mémoire
+ #include <string.h>  // Inclusion de la bibliothèque pour la manipulation des chaînes de caractères
+ #include "list.h"    // Inclusion du fichier d'en-tête "list.h" contenant les déclarations de la liste chaînée
 
-    char names[MAX_NAMES][MAX_NAME_LENGTH];
-    int count = 0;
+ #define MAX_NAMES 100        // Définition de la taille maximale du tableau de noms
+ #define MAX_NAME_LENGTH 50   // Définition de la longueur maximale d'un nom
 
-    while (fscanf(file, "%s", names[count]) != EOF) {
-        count++;
-    }
+ int main(int argc, char *argv[]) {
+     FILE *file = fopen("cx15.3.data", "r");  // Ouverture du fichier contenant les noms
+     if (!file) {  // Vérification de l'ouverture réussie du fichier
+         fprintf(stderr, "Erreur lors de l'ouverture du fichier\n");  // Message d'erreur en cas d'échec
+         return 1;  // Retourne 1 pour indiquer une erreur
+     }
 
-    fclose(file);
+     char names[MAX_NAMES][MAX_NAME_LENGTH];  // Déclaration du tableau pour stocker les noms
+     int count = 0;  // Initialisation du compteur de noms
 
-    const char *stoplist_filename = (argc > 1) ? argv[1] : "stoplist.txt";
-    FILE *stoplist_file = fopen(stoplist_filename, "r");
-    if (!stoplist_file) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier stoplist\n");
-        return 1;
-    }
+     // Lecture des noms depuis le fichier jusqu'à la fin du fichier (EOF)
+     while (fscanf(file, "%s", names[count]) != EOF) {
+         count++;  // Incrémentation du compteur de noms
+     }
 
-    list stoplist = NULL;
-    char word[MAX_NAME_LENGTH];
+     fclose(file);  // Fermeture du fichier
 
-    while (fscanf(stoplist_file, "%s", word) != EOF) {
-        stoplist = cons(word, stoplist);
-    }
+     // Détermination du nom du fichier de la liste des mots à exclure
+     const char *stoplist_filename = (argc > 1) ? argv[1] : "stoplist.txt";
+     FILE *stoplist_file = fopen(stoplist_filename, "r");  // Ouverture du fichier contenant la liste des mots à exclure
+     if (!stoplist_file) {  // Vérification de l'ouverture réussie du fichier
+         fprintf(stderr, "Erreur lors de l'ouverture du fichier stoplist\n");  // Message d'erreur en cas d'échec
+         return 1;  // Retourne 1 pour indiquer une erreur
+     }
 
-    fclose(stoplist_file);
+     list stoplist = NULL;  // Initialisation de la liste des mots à exclure à NULL (vide)
+     char word[MAX_NAME_LENGTH];  // Déclaration d'un tableau pour stocker chaque mot lu
 
-    for (int i = 0; i < count; i++) {
-        if (!is_in_list(stoplist, names[i])) {
-            printf("%s\n", names[i]);
-        }
-    }
+     // Lecture des mots à exclure depuis le fichier jusqu'à la fin du fichier (EOF)
+     while (fscanf(stoplist_file, "%s", word) != EOF) {
+         stoplist = cons(word, stoplist);  // Ajout de chaque mot à la liste des mots à exclure
+     }
 
-    return 0;
-}
+     fclose(stoplist_file);  // Fermeture du fichier
+
+     // Boucle à travers tous les noms lus
+     for (int i = 0; i < count; i++) {
+         // Affichage du nom s'il n'est pas dans la liste des mots à exclure
+         if (!is_in_list(stoplist, names[i])) {
+             printf("%s\n", names[i]);  // Affichage du nom
+         }
+     }
+
+     return 0;  // Retourne 0 pour indiquer que le programme s'est terminé avec succès
+ }
